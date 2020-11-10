@@ -242,11 +242,11 @@ class Data:
                     if sys.version_info[0] < 3:
                         word = word.decode('utf-8')
                     if self.number_normalized:
-                        word = normalize_word(word)
+                        word = normalize_word(word)  #规范化word
                     label = pairs[-1]
                     self.label_alphabet.add(label)
                     self.word_alphabet.add(word)
-                    ## build feature alphabet
+                    ## build feature alphabet 构建特征字典
                     for idx in range(self.feature_num):
                         feat_idx = pairs[idx+1].split(']',1)[-1]
                         self.feature_alphabets[idx].add(feat_idx)
@@ -273,7 +273,7 @@ class Data:
             self.tagScheme = "Not sequence labeling task"
 
 
-    def fix_alphabet(self):
+    def fix_alphabet(self):  # 关闭字典 这是什么操作？
         self.word_alphabet.close()
         self.char_alphabet.close()
         self.label_alphabet.close()

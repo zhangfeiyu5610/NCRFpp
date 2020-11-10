@@ -212,25 +212,25 @@ def batchify_sequence_labeling_with_label(input_batch_list, gpu, if_train=True):
             label_seq_tensor: (batch_size, max_sent_len)
             mask: (batch_size, max_sent_len)
     """
-    batch_size = len(input_batch_list)
-    words = [sent[0] for sent in input_batch_list]
-    features = [np.asarray(sent[1]) for sent in input_batch_list]
+    batch_size = len(input_batch_list) #batch 大小
+    words = [sent[0] for sent in input_batch_list]  #取出words矩阵 [batch_size, sent_len]
+    features = [np.asarray(sent[1]) for sent in input_batch_list] # 取出feature矩阵 [batch_size,sent_len,feature_num]
     feature_num = len(features[0][0])
-    chars = [sent[2] for sent in input_batch_list]
-    labels = [sent[3] for sent in input_batch_list]
-    word_seq_lengths = torch.LongTensor(list(map(len, words)))
-    max_seq_len = word_seq_lengths.max().item()
-    word_seq_tensor = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).long()
-    label_seq_tensor = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).long()
-    feature_seq_tensors = []
+    chars = [sent[2] for sent in input_batch_list] # chars矩阵 [batch_size, sent_len, each_word_len]
+    labels = [sent[3] for sent in input_batch_list] # labels矩阵 [batch_size, sent_len]
+    word_seq_lengths = torch.LongTensor(list(map(len, words))) # 求出每句长度
+    max_seq_len = word_seq_lengths.max().item() # 最大句长
+    word_seq_tensor = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).long() #都统一为最大句长
+    label_seq_tensor = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).long() #都统一为最大句长
+    feature_seq_tensors = [] 
     for idx in range(feature_num):
-        feature_seq_tensors.append(torch.zeros((batch_size, max_seq_len),requires_grad =  if_train).long())
-    mask = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).byte()
+        feature_seq_tensors.append(torch.zeros((batch_size, max_seq_len),requires_grad =  if_train).long())#统一为最大句长
+    mask = torch.zeros((batch_size, max_seq_len), requires_grad =  if_train).byte() #掩码矩阵
     for idx, (seq, label, seqlen) in enumerate(zip(words, labels, word_seq_lengths)):
         seqlen = seqlen.item()
         word_seq_tensor[idx, :seqlen] = torch.LongTensor(seq)
         label_seq_tensor[idx, :seqlen] = torch.LongTensor(label)
-        mask[idx, :seqlen] = torch.Tensor([1]*seqlen)
+        mask[idx, :seqlen] = torch.Tensor([1]*seqlen) #手动给非0 mask 为1
         for idy in range(feature_num):
             feature_seq_tensors[idy][idx,:seqlen] = torch.LongTensor(features[idx][:,idy])
     word_seq_lengths, word_perm_idx = word_seq_lengths.sort(0, descending=True)
@@ -348,8 +348,6 @@ def batchify_sentence_classification_with_label(input_batch_list, gpu, if_train=
         char_seq_recover = char_seq_recover.cuda()
         mask = mask.cuda()
     return word_seq_tensor,feature_seq_tensors, word_seq_lengths, word_seq_recover, char_seq_tensor, char_seq_lengths, char_seq_recover, label_seq_tensor, mask
-
-
 
 
 def train(data):
