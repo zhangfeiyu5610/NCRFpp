@@ -393,16 +393,16 @@ class Data:
     def read_config(self,config_file):
         config = config_file_to_dict(config_file)
         ## read data:
-        the_item = 'train_dir'
+        the_item = 'train_dir'   #训练集
         if the_item in config:
             self.train_dir = config[the_item]
-        the_item = 'dev_dir'
+        the_item = 'dev_dir'     #开发集
         if the_item in config:
             self.dev_dir = config[the_item]
-        the_item = 'test_dir'
+        the_item = 'test_dir'   #测试集
         if the_item in config:
             self.test_dir = config[the_item]
-        the_item = 'raw_dir'
+        the_item = 'raw_dir'   
         if the_item in config:
             self.raw_dir = config[the_item]
         the_item = 'decode_dir'
@@ -411,14 +411,14 @@ class Data:
         the_item = 'dset_dir'
         if the_item in config:
             self.dset_dir = config[the_item]
-        the_item = 'model_dir'
+        the_item = 'model_dir'   #模型文件
         if the_item in config:
             self.model_dir = config[the_item]
         the_item = 'load_model_dir'
         if the_item in config:
             self.load_model_dir = config[the_item]
 
-        the_item = 'word_emb_dir'
+        the_item = 'word_emb_dir'  #词向量文件
         if the_item in config:
             self.word_emb_dir = config[the_item]
         the_item = 'char_emb_dir'
@@ -426,14 +426,14 @@ class Data:
             self.char_emb_dir = config[the_item]
 
 
-        the_item = 'MAX_SENTENCE_LENGTH'
+        the_item = 'MAX_SENTENCE_LENGTH'   #最大句长
         if the_item in config:
             self.MAX_SENTENCE_LENGTH = int(config[the_item])
-        the_item = 'MAX_WORD_LENGTH'
+        the_item = 'MAX_WORD_LENGTH'      # 最大单词长度
         if the_item in config:
             self.MAX_WORD_LENGTH = int(config[the_item])
 
-        the_item = 'norm_word_emb'
+        the_item = 'norm_word_emb'    #规范化（下面三个都是）
         if the_item in config:
             self.norm_word_emb = str2bool(config[the_item])
         the_item = 'norm_char_emb'
@@ -443,99 +443,99 @@ class Data:
         if the_item in config:
             self.number_normalized = str2bool(config[the_item])
 
-        the_item = 'sentence_classification'
+        the_item = 'sentence_classification'  
         if the_item in config:
             self.sentence_classification = str2bool(config[the_item])
-        the_item = 'seg'
+        the_item = 'seg'            # ？
         if the_item in config:
             self.seg = str2bool(config[the_item])
-        the_item = 'word_emb_dim'
+        the_item = 'word_emb_dim'  # 词embedding维度
         if the_item in config:
             self.word_emb_dim = int(config[the_item])
-        the_item = 'char_emb_dim'
+        the_item = 'char_emb_dim'  # 字符embedding维度
         if the_item in config:
             self.char_emb_dim = int(config[the_item])
 
         ## read network:
-        the_item = 'use_crf'
+        the_item = 'use_crf'      #是否用CRF层
         if the_item in config:
             self.use_crf = str2bool(config[the_item])
-        the_item = 'use_char'
+        the_item = 'use_char'    #是否采用字符级信息
         if the_item in config:
             self.use_char = str2bool(config[the_item])
-        the_item = 'word_seq_feature'
+        the_item = 'word_seq_feature'  # 选择解码字信息的模型
         if the_item in config:
             self.word_feature_extractor = config[the_item]
-        the_item = 'char_seq_feature'
+        the_item = 'char_seq_feature'  # 选择解码字符信息的模型
         if the_item in config:
             self.char_feature_extractor = config[the_item]
-        the_item = 'nbest'
+        the_item = 'nbest'             # CRF预测 预测前多少个标签
         if the_item in config:
             self.nbest = int(config[the_item])
 
-        the_item = 'feature'
+        the_item = 'feature'          # 手工添加特征
         if the_item in config:
             self.feat_config = config[the_item] ## feat_config is a dict
 
 
         ## read training setting:
-        the_item = 'optimizer'
+        the_item = 'optimizer'   # 优化器
         if the_item in config:
             self.optimizer = config[the_item]
-        the_item = 'ave_batch_loss'
+        the_item = 'ave_batch_loss'  # 平均loss
         if the_item in config:
             self.average_batch_loss = str2bool(config[the_item])
-        the_item = 'status'
+        the_item = 'status'   
         if the_item in config:
             self.status = config[the_item]
 
         ## read Hyperparameters:
-        the_item = 'cnn_layer'
+        the_item = 'cnn_layer'    #cnn 层数
         if the_item in config:
             self.HP_cnn_layer = int(config[the_item])
-        the_item = 'iteration'
+        the_item = 'iteration'   # 轮次
         if the_item in config:
             self.HP_iteration = int(config[the_item])
-        the_item = 'batch_size'
+        the_item = 'batch_size'  # batch大小
         if the_item in config:
             self.HP_batch_size = int(config[the_item])
 
-        the_item = 'char_hidden_dim'
+        the_item = 'char_hidden_dim' # 字符信息 隐层大小
         if the_item in config:
             self.HP_char_hidden_dim = int(config[the_item])
-        the_item = 'hidden_dim'
+        the_item = 'hidden_dim'    # 字信息 隐层大小
         if the_item in config:
             self.HP_hidden_dim = int(config[the_item])
-        the_item = 'dropout'
+        the_item = 'dropout'       # dropout比率
         if the_item in config:
             self.HP_dropout = float(config[the_item])
-        the_item = 'lstm_layer'
+        the_item = 'lstm_layer'   # LSTM层数
         if the_item in config:
             self.HP_lstm_layer = int(config[the_item])
-        the_item = 'bilstm'
+        the_item = 'bilstm'     # 是否用双向LSTM
         if the_item in config:
             self.HP_bilstm = str2bool(config[the_item])
 
-        the_item = 'gpu'
+        the_item = 'gpu'      # 几号卡
         if the_item in config:
             self.HP_gpu = str2bool(config[the_item])
-        the_item = 'learning_rate'
+        the_item = 'learning_rate'  # 学习率
         if the_item in config:
             self.HP_lr = float(config[the_item])
-        the_item = 'lr_decay'
+        the_item = 'lr_decay'       # 学习率衰减
         if the_item in config:
             self.HP_lr_decay = float(config[the_item])
-        the_item = 'clip'
+        the_item = 'clip'           # ？ 分布式？
         if the_item in config:
             self.HP_clip = float(config[the_item])
-        the_item = 'momentum'
+        the_item = 'momentum'       # 动量 优化器参数
         if the_item in config:
             self.HP_momentum = float(config[the_item])
-        the_item = 'l2'
+        the_item = 'l2'           # 正则化
         if the_item in config:
             self.HP_l2 = float(config[the_item])
         ## no seg for sentence classification
-        if self.sentence_classification:
+        if self.sentence_classification: 
             self.seg = False
             self.use_crf = False
 
