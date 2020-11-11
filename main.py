@@ -233,17 +233,17 @@ def batchify_sequence_labeling_with_label(input_batch_list, gpu, if_train=True):
         mask[idx, :seqlen] = torch.Tensor([1]*seqlen) #手动给非0 mask 为1
         for idy in range(feature_num):
             feature_seq_tensors[idy][idx,:seqlen] = torch.LongTensor(features[idx][:,idy])
-    word_seq_lengths, word_perm_idx = word_seq_lengths.sort(0, descending=True)
-    word_seq_tensor = word_seq_tensor[word_perm_idx]
+    word_seq_lengths, word_perm_idx = word_seq_lengths.sort(0, descending=True)# 按句长排序
+    word_seq_tensor = word_seq_tensor[word_perm_idx] # 字表示层相应的排序
     for idx in range(feature_num):
-        feature_seq_tensors[idx] = feature_seq_tensors[idx][word_perm_idx]
+        feature_seq_tensors[idx] = feature_seq_tensors[idx][word_perm_idx] # 特征张量相应排序
 
-    label_seq_tensor = label_seq_tensor[word_perm_idx]
-    mask = mask[word_perm_idx]
-    ### deal with char
+    label_seq_tensor = label_seq_tensor[word_perm_idx] # 标签张量相应排序
+    mask = mask[word_perm_idx] # mask取相应排序
+    ### deal with char  [batch_size, sent_len, each_word_len]
     # pad_chars (batch_size, max_seq_len)
     pad_chars = [chars[idx] + [[0]] * (max_seq_len-len(chars[idx])) for idx in range(len(chars))]
-    length_list = [list(map(len, pad_char)) for pad_char in pad_chars]
+    length_list = [list(map(len, pad_char)) for pad_char in pad_chars] #length_len [batch_size,max_seq_len]
     max_word_len = max(map(max, length_list))
     char_seq_tensor = torch.zeros((batch_size, max_seq_len, max_word_len), requires_grad =  if_train).long()
     char_seq_lengths = torch.LongTensor(length_list)

@@ -19,12 +19,12 @@ class WordSequence(nn.Module):
         self.use_char = data.use_char
         # self.batch_size = data.HP_batch_size
         # self.hidden_dim = data.HP_hidden_dim
-        self.droplstm = nn.Dropout(data.HP_dropout)
-        self.bilstm_flag = data.HP_bilstm
-        self.lstm_layer = data.HP_lstm_layer
-        self.wordrep = WordRep(data)
-        self.input_size = data.word_emb_dim
-        self.feature_num = data.feature_num
+        self.droplstm = nn.Dropout(data.HP_dropout)  # Dropout层
+        self.bilstm_flag = data.HP_bilstm  # 是否用LSTM
+        self.lstm_layer = data.HP_lstm_layer # lstm层数
+        self.wordrep = WordRep(data) #词表示层
+        self.input_size = data.word_emb_dim #字 词向量维度
+        self.feature_num = data.feature_num # 特征数
         if self.use_char:
             self.input_size += data.HP_char_hidden_dim
             if data.char_feature_extractor == "ALL":

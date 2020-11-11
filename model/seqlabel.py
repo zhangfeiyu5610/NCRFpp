@@ -34,6 +34,14 @@ class SeqLabel(nn.Module):
 
 
     def calculate_loss(self, word_inputs, feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover, batch_label, mask):
+        #word_inputs [batch_size,max_seq_len]
+        #feature_inputs [feature_idx_num,batch_size,max_seq_len]
+        #word_seq_lengths [batch_size,1]
+        #char_inputs [batch_size*max_seq_len, max_word_len]
+        #char_seq_length [batch_size*seq_len, 1]
+        #char_seq_recover [batch_size,1]
+        #batch_label [batch_size,max_seq_len]
+        #mask [batch_size,max_seq_len]
         outs = self.word_hidden(word_inputs,feature_inputs, word_seq_lengths, char_inputs, char_seq_lengths, char_seq_recover)
         batch_size = word_inputs.size(0)
         seq_len = word_inputs.size(1)
